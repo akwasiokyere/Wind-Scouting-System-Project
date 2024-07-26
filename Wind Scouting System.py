@@ -26,7 +26,7 @@ def wind_speed_data_to_file(timestamp_str, voltage):
     except Exception as e:
         print("Error writing to file", e)
         
-# Function to loop the progran run forever
+# Function to loop the program forever
 def main():
     while True:
         voltage =  read_wind_speed() # store incoming data as voltage
@@ -47,15 +47,17 @@ def main():
         # Send voltage through blutooth to the app in Mit Inventer app
         uart.write(f"{timestmp_str},{Voltage}\n")
         
-        utime.pause(2)
+        utime.sleep(2)
         
 # Initialise the data file with headers if it does not exist
 try:
     with open("wind_append_data_file.csv", "r") as data_file:
         pass
-except open("wind_append_data_file.csv", "r") as data_file:
+except OSError:
+    with open("wind_append_data_file.csv", "r") as data_file:
         data_file.write("timpstamp_str, Voltage\n")
         
+# Program should stop running when a key on the keyboard is pressed        
 try:
     main()
 except KeyboardInterupt:
